@@ -1,7 +1,7 @@
 
 '''
 Functia verifica daca un numar este patrat perfect
-'''
+
 def is_perfect_square(n):
     if n == 1 or n == 0:
         return True
@@ -23,10 +23,10 @@ def test_is_perfect_square():
     assert is_perfect_square(100) == True
     assert is_perfect_square(81) == True
 
-'''
+
 Functia cauta cea mai lunga subsecventa de patrate perfecte
 rezultatul functiei este construit in lista lst1
-'''
+
 def get_longest_all_perfect_squares(lst: list[int]) -> list[int]:
     lst1 = []
     aux = []
@@ -55,8 +55,10 @@ def test_get_longest_all_perfect_squares():
     assert get_longest_all_perfect_squares(lst) == [121, 4, 9]
 
 '''
+'''
 Functia scrie un numar din baza 10 in baza 2 si rezultatul este memorat intr-o lista. apoi sunt numarate cifrele de 1
 '''
+
 def get_number_of_1_bits_in_binary_nr(n):
     n1 = n
     b = 0
@@ -94,13 +96,12 @@ def get_longest_same_bit_counts(lst: list[int]) -> list[int]:
     if nr > max:
         lst1 = aux
     return lst1
-
+'''
 def get_div_count(n):
-    '''
+
     functia calculeaza numarul de divizori al unui numar.
     :param n:
     :return:
-    '''
     nr = 0;
     for i in range(1, n + 1):
         if n % i == 0:
@@ -133,6 +134,105 @@ def get_longest_same_div_count(lst: list[int]) -> list[int]:
     if nr > max:
         lst1 = aux
     return lst1
+'''
+
+def get_longest_all_even(lst: list[int]) -> list[int]:
+    '''
+    functia determina cea mai lunga subsecventa de numere pare.
+    rezultatul este construit in lista lst1.
+    :param lst:
+    :return:
+    '''
+    lst1 = []
+    aux = []
+    max = 0
+    nr = 0
+    for i in lst:
+        if i % 2 == 0:
+            nr = nr + 1
+            aux.append(i)
+        else:
+            if nr > max:
+                max = nr
+                lst1 = aux
+            nr = 0
+            aux = []
+    if nr > max:
+        lst1 = aux
+    return lst1
+
+
+def test_get_longest_all_even():
+    lst = [2,4,6,8,3,6,4,1,1,9,10,18,12]
+    assert get_longest_all_even(lst) == [2,4,6,8]
+    lst = [2,4,6,8,1,1,3,4,6,5,7,8,10,12,14,16]
+    assert get_longest_all_even(lst) == [8,10,12,14,16]
+
+def is_prime(n):
+    nr = 0
+    for i in range(1, n + 1):
+        if n % i == 0:
+            nr = nr + 1
+    if nr == 2:
+        return True
+    else:
+        return False
+
+def test_is_prime():
+    assert is_prime(5) == True
+    assert is_prime(2) == True
+    assert is_prime(7) == True
+    assert is_prime(13) == True
+    assert is_prime(1) == False
+
+def digit_number(n):
+    '''
+    determinarea numarului de cifre
+    :param n:
+    :return:
+    '''
+    nr = 1
+    while n > 9:
+        n = n // 10
+        nr = nr + 1
+    return nr
+
+def concat_numbers(x, y):
+    '''
+    concatenarea a doua numere
+    :param x:
+    :param y:
+    :return:
+    '''
+    nr = digit_number(y)
+    number = x
+    number = number * pow(10, nr) + y
+    return number
+
+def get_longest_concat_is_prime(lst: list[int]) -> list[int]:
+    '''
+    functia cauta cea mai lunga subsecventa in care concatenarea subsecventei e numar prim.
+    rezultatul este construit in lista lst1
+    :param lst:
+    :return:
+    '''
+    lst1 = []
+    max = 1
+    for i in range(0, len(lst)):
+        concat = lst[i]
+        nr = 1
+        for j in range(i+1, len(lst)):
+            concat = concat_numbers(concat, lst[j])
+            nr = nr + 1
+            if nr > max and is_prime(concat) == True:
+                lst1 = []
+                for h in range(i, j + 1):
+                    lst1.append(lst[h])
+                max = nr
+    return lst1
+
+
+
 
 def main():
     while True:
@@ -151,25 +251,22 @@ def main():
                 lst.append(elem)
             print(lst)
         elif optiune == '2':
-            if get_longest_all_perfect_squares(lst) == []:
+            if get_longest_all_even(lst) == []:
                 print('Nu exista astfel de secvente.')
             else:
-                print(f'Cea mai lunga subsecventa cu propietatea 1 este {get_longest_all_perfect_squares(lst)}')
+                print(f'Cea mai lunga subsecventa cu propietatea 1 este {get_longest_all_even(lst)}')
         elif optiune == '3':
-            print(f'Cea mai lunga subsecventa cu propietatea 2 este {get_longest_same_bit_counts(lst)} ')
+            print(f'Cea mai lunga subsecventa cu propietatea 2 este {get_longest_concat_is_prime(lst)} ')
         elif optiune == '4':
-            print(f'Cea mai lunga subsecventa cu proprietatea 3 este {get_longest_same_div_count(lst)}')
+            print(f'Cea mai lunga subsecventa cu proprietatea 3 este {get_longest_same_bit_counts(lst)}')
         elif optiune == 'x':
             break
         else:
             print('Optiune Invalida!')
 
 
-
-
-
-test_is_perfect_square()
-test_get_longest_all_perfect_squares()
-test_get_div_count()
+test_is_prime()
+test_get_longest_all_even()
 main()
+
 
