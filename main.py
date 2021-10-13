@@ -95,11 +95,51 @@ def get_longest_same_bit_counts(lst: list[int]) -> list[int]:
         lst1 = aux
     return lst1
 
+def get_div_count(n):
+    '''
+    functia calculeaza numarul de divizori al unui numar.
+    :param n:
+    :return:
+    '''
+    nr = 0;
+    for i in range(1, n + 1):
+        if n % i == 0:
+            nr = nr + 1
+    return nr
+
+def test_get_div_count():
+    assert get_div_count(6) == 4
+    assert get_div_count(2) == 2
+    assert get_div_count(12) == 6
+    assert get_div_count(16) == 5
+
+def get_longest_same_div_count(lst: list[int]) -> list[int]:
+    lst1 = []
+    aux = [lst[0]]
+    max = 1
+    nr = 1
+    div_nr = get_div_count(lst[0])
+    for i in range(1, len(lst)):
+        if get_div_count(lst[i]) == div_nr:
+            nr = nr + 1
+            aux.append(lst[i])
+        else:
+            if nr > max:
+                max = nr
+                lst1 = aux
+            aux = [lst[i]]
+            nr = 1
+            div_nr = get_div_count(lst[i])
+    if nr > max:
+        lst1 = aux
+    return lst1
+
 def main():
     while True:
         print('1. Citire date. ')
         print('2. Determinare cea mai lungă subsecvență cu proprietatea 1.')
         print('3. Determinare cea mai lungă subsecvență cu proprietatea 2.')
+        print('4. Determinare cea mai lunga subsecventa cu proprietatea 3.')
         print('x. Iesire.')
         optiune = input('Alege optiunea: ')
         if optiune == '1':
@@ -117,6 +157,8 @@ def main():
                 print(f'Cea mai lunga subsecventa cu propietatea 1 este {get_longest_all_perfect_squares(lst)}')
         elif optiune == '3':
             print(f'Cea mai lunga subsecventa cu propietatea 2 este {get_longest_same_bit_counts(lst)} ')
+        elif optiune == '4':
+            print(f'Cea mai lunga subsecventa cu proprietatea 3 este {get_longest_same_div_count(lst)}')
         elif optiune == 'x':
             break
         else:
@@ -128,5 +170,6 @@ def main():
 
 test_is_perfect_square()
 test_get_longest_all_perfect_squares()
+test_get_div_count()
 main()
 
